@@ -1,8 +1,11 @@
 """Database models"""
 
 from django.db import models
-from django.contrib.auth.models \
-    import AbstractBaseUser, BaseUserManager, PermissionsMixin
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+)
 
 
 class UserManager(BaseUserManager):
@@ -11,7 +14,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_field):
         """Create, save and return new user."""
         if not email:
-            raise ValueError('User must have a valid email.')
+            raise ValueError("User must have a valid email.")
         normalized_email = self.normalize_email(email)
         user = self.model(email=normalized_email, **extra_field)
         user.set_password(password)
@@ -29,6 +32,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     """User in the system."""
+
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
@@ -36,4 +40,4 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'email'
+    USERNAME_FIELD = "email"
